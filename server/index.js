@@ -8,6 +8,7 @@ import helmet from 'helmet'
 import morgan from "morgan"
 import path from 'path'
 import { fileURLToPath } from "url"
+import authRoutes from './routes/auth.js'
 import {register} from './controllers/auth.js'
 
 //Configurations
@@ -29,7 +30,7 @@ app.use('/assests', express.static(path.join(__dirname,'public/assests')))
 
 const storage = multer.diskStorage({
     destination : function(req,file,cb) {
-        cb(null,'public/assetd')
+        cb(null,'public/assets')
     },
 
     filename: function(req,file,cb){
@@ -42,6 +43,10 @@ const upload = multer({storage})
 //Routes with files
 
 app.post('/auth/register', upload.single('picture'), register)
+
+//Seperate Routes
+
+app.use('/auth', authRoutes)
 
 
 //Mongoose Setup
